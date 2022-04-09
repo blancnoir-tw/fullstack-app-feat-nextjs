@@ -1,3 +1,4 @@
+import { Playlist } from '@prisma/client'
 import useSWR from 'swr'
 import fetcher from './fetcher'
 
@@ -12,10 +13,10 @@ export const useMe = () => {
 }
 
 export const usePlaylist = () => {
-  const { data, error } = useSWR('/playlist', fetcher)
+  const { data, error } = useSWR<Playlist>('/playlist', fetcher)
 
   return {
-    playlists: (data as any) || [],
+    playlists: data || [],
     isLoading: !data && !error,
     isError: error,
   }
