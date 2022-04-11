@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken'
 import { NextApiRequest, NextApiResponse } from 'next'
 import prisma from './prisma'
 
-type JWTPayload = { id: number; name: string; date: Date }
+type JWTPayload = { id: string; name: string; date: Date }
 
 const hasId = (decoded: any): decoded is JWTPayload => 'id' in decoded
 
@@ -25,7 +25,7 @@ export const validateRoute = (handler) => {
         throw new Error('Not real user')
       }
 
-      user = await prisma.user.findUnique({ where: { id: decoded.id } })
+      user = await prisma.user.findUnique({ where: { id: +decoded.id } })
 
       if (!user) {
         throw new Error('Not real user')
@@ -38,4 +38,12 @@ export const validateRoute = (handler) => {
 
     return handler(req, res, user)
   }
+}
+
+export const validateToken = (token) => {
+  const decoded = jwt.verify(token, 'hello')
+  if (!hasId(decoded)) {
+    throw new Error('Not real user')
+  }
+  return decoded
 }
