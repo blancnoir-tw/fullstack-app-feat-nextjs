@@ -29,14 +29,8 @@ const Home = ({ artists }: Props) => {
         </Box>
         <Flex>
           {artists.map((artist) => (
-            <Box paddingX="10px" width="20%">
-              <Box
-                key={artist.id}
-                bg="gray.900"
-                borderRadius="4px"
-                padding="15px"
-                width="100%"
-              >
+            <Box key={artist.id} paddingX="10px" width="20%">
+              <Box bg="gray.900" borderRadius="4px" padding="15px" width="100%">
                 <Image
                   src="http://placekitten.com/300/300"
                   borderRadius="100%"
